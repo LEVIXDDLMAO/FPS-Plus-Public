@@ -1,6 +1,8 @@
 package;
 
+#if windows
 import sys.FileSystem;
+#end
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxBar;
 import openfl.media.Sound;
