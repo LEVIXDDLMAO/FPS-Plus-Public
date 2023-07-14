@@ -1,5 +1,8 @@
 package;
 
+import sys.FileSystem;
+import flixel.tweens.FlxTween;
+import flixel.ui.FlxBar;
 import openfl.media.Sound;
 import title.*;
 import config.*;
@@ -24,8 +27,11 @@ class Startup extends FlxState
     var nextState:FlxState = new TitleVideo();
 
     var splash:FlxSprite;
-    //var dummy:FlxSprite;
+    var loadingBar:FlxBar;
     var loadingText:FlxText;
+
+    var currentLoaded:Int = 0;
+    var loadTotal:Int = 0;
 
     var songsCached:Bool;
     public static final songs:Array<String> =   ["Tutorial", 
@@ -35,6 +41,8 @@ class Startup extends FlxState
                                 "Satin-Panties", "High", "Milf", 
                                 "Cocoa", "Eggnog", "Winter-Horrorland", 
                                 "Senpai", "Roses", "Thorns",
+                                "Ugh", "Guns", "Stress",
+                                "Lil-Buddies",
                                 "klaskiiLoop", "freakyMenu"]; //Start of the non-gameplay songs.
                                 
     //List of character graphics and some other stuff.
@@ -42,29 +50,36 @@ class Startup extends FlxState
     var charactersCached:Bool;
     var startCachingCharacters:Bool = false;
     var charI:Int = 0;
-    public static final characters:Array<String> =   ["BOYFRIEND", "bfCar", "christmas/bfChristmas", "weeb/bfPixel", "weeb/bfPixelsDEAD",
-                                    "GF_assets", "gfCar", "christmas/gfChristmas", "weeb/gfPixel",
-                                    "DADDY_DEAREST", "spooky_kids_assets", "Monster_Assets",
-                                    "Pico_FNF_assetss", "Mom_Assets", "momCar",
-                                    "christmas/mom_dad_christmas_assets", "christmas/monsterChristmas",
-                                    "weeb/senpai", "weeb/spirit", "weeb/senpaiCrazy"];
+    public static final characters:Array<String> =   ["BOYFRIEND", "week4/bfCar", "week5/bfChristmas", "week6/bfPixel", "week6/bfPixelsDEAD", "week7/bfAndGF", "week7/bfHoldingGF-DEAD",
+                                    "GF_assets", "week4/gfCar", "week5/gfChristmas", "week6/gfPixel", "week7/gfTankmen",
+                                    "week1/DADDY_DEAREST", 
+                                    "week2/spooky_kids_assets", "week2/Monster_Assets",
+                                    "week3/Pico_FNF_assetss", "week7/picoSpeaker",
+                                    "week4/Mom_Assets", "week4/momCar",
+                                    "week5/mom_dad_christmas_assets", "week5/monsterChristmas",
+                                    "week6/senpai", "week6/spirit",
+                                    "week7/tankmanCaptain"];
 
     var graphicsCached:Bool;
     var startCachingGraphics:Bool = false;
     var gfxI:Int = 0;
-    public static final graphics:Array<String> =    ["logoBumpin", "logoBumpin2", "titleBG", "gfDanceTitle", "gfDanceTitle2", "titleEnter",
-                                    "stageback", "stagefront", "stagecurtains",
-                                    "halloween_bg",
-                                    "philly/sky", "philly/city", "philly/behindTrain", "philly/train", "philly/street", "philly/win0", "philly/win1", "philly/win2", "philly/win3", "philly/win4",
-                                    "limo/bgLimo", "limo/fastCarLol", "limo/limoDancer", "limo/limoDrive", "limo/limoSunset",
-                                    "christmas/bgWalls", "christmas/upperBop", "christmas/bgEscalator", "christmas/christmasTree", "christmas/bottomBop", "christmas/fgSnow", "christmas/santa",
-                                    "christmas/evilBG", "christmas/evilTree", "christmas/evilSnow",
-                                    "weeb/weebSky", "weeb/weebSchool", "weeb/weebStreet", "weeb/weebTreesBack", "weeb/weebTrees", "weeb/petals", "weeb/bgFreaks",
-                                    "weeb/animatedEvilSchool"];
+    public static final graphics:Array<String> =    ["logoBumpin", "logoBumpin2", "gfDanceTitle2", "titleEnter", "fpsPlus/title/backgroundBf", "fpsPlus/title/barBottom", "fpsPlus/title/barTop", "fpsPlus/title/gf", "fpsPlus/title/glow", 
+                                    "week1/stageback", "week1/stagefront", "week1/stagecurtains",
+                                    "week2/halloween_bg",
+                                    "week3/philly/sky", "week3/philly/city", "week3/philly/behindTrain", "week3/philly/train", "week3/philly/street", "week3/philly/win0", "week3/philly/win1", "week3/philly/win2", "week3/philly/win3", "week3/philly/win4",
+                                    "week4/limo/bgLimo", "week4/limo/fastCarLol", "week4/limo/limoDancer", "week4/limo/limoDrive", "week4/limo/limoSunset",
+                                    "week5/christmas/bgWalls", "week5/christmas/upperBop", "week5/christmas/bgEscalator", "week5/christmas/christmasTree", "week5/christmas/bottomBop", "week5/christmas/fgSnow", "week5/christmas/santa",
+                                    "week5/christmas/evilBG", "week5/christmas/evilTree", "week5/christmas/evilSnow",
+                                    "week6/weeb/weebSky", "week6/weeb/weebSchool", "week6/weeb/weebStreet", "week6/weeb/weebTreesBack", "week6/weeb/weebTrees", "week6/weeb/petals", "week6/weeb/bgFreaks",
+                                    "week6/weeb/animatedEvilSchool", "week6/weeb/senpaiCrazy",
+                                    "week7/stage/tank0", "week7/stage/tank1", "week7/stage/tank2", "week7/stage/tank3", "week7/stage/tank4", "week7/stage/tank5", "week7/stage/tankmanKilled1", 
+                                    "week7/stage/smokeLeft", "week7/stage/smokeRight", "week7/stage/tankBuildings", "week7/stage/tankClouds", "week7/stage/tankGround", "week7/stage/tankMountains", "week7/stage/tankRolling", "week7/stage/tankRuins", "week7/stage/tankSky", "week7/stage/tankWatchtower"];
 
     var cacheStart:Bool = false;
 
     public static var thing = false;
+
+    public static var hasEe2:Bool;
 
 	override function create()
 	{
@@ -122,6 +137,8 @@ class Startup extends FlxState
             graphicsCached = !FlxG.save.data.graphicsPreload2;
         }
 
+        hasEe2 = CoolUtil.exists(Paths.inst("Lil-Buddies"));
+
         splash = new FlxSprite(0, 0);
         splash.frames = Paths.getSparrowAtlas('fpsPlus/rozeSplash');
         splash.animation.addByPrefix('start', 'Splash Start', 24, false);
@@ -131,9 +148,21 @@ class Startup extends FlxState
         splash.updateHitbox();
         splash.screenCenter();
 
+        loadTotal = (!songsCached ? songs.length : 0) + (!charactersCached ? characters.length : 0) + (!graphicsCached ? graphics.length : 0);
+
+        if(loadTotal > 0){
+            loadingBar = new FlxBar(0, 605, LEFT_TO_RIGHT, 600, 24, this, 'currentLoaded', 0, loadTotal);
+            loadingBar.createFilledBar(0xFF333333, 0xFF95579A);
+            loadingBar.screenCenter(X);
+            loadingBar.visible = false;
+            add(loadingBar);
+        }
+
         loadingText = new FlxText(5, FlxG.height - 30, 0, "", 24);
         loadingText.setFormat(Paths.font("vcr"), 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
         add(loadingText);
+
+        
 
         #if web
         FlxG.sound.play(Paths.sound("tick"), 0);   
@@ -161,7 +190,9 @@ class Startup extends FlxState
                 graphicsCached = true;
             });
             #else
-            preload(); 
+            if(!songsCached || !charactersCached || !graphicsCached){
+                preload(); 
+            }
             #end
             
             cacheStart = true;
@@ -177,9 +208,11 @@ class Startup extends FlxState
             splash.updateHitbox();
             splash.screenCenter();
 
-            new FlxTimer().start(0.3, function(tmr:FlxTimer)
-            {
+            new FlxTimer().start(0.3, function(tmr:FlxTimer){
                 loadingText.text = "Done!";
+                if(loadingBar != null){
+                    FlxTween.tween(loadingBar, {alpha: 0}, 0.3);
+                }
             });
         }
 
@@ -197,8 +230,14 @@ class Startup extends FlxState
                 charactersCached = true;
             }
             else{
-                ImageCache.add(Paths.file(characters[charI], "images", "png"));
+                if(CoolUtil.exists(Paths.file(characters[charI], "images", "png"))){
+                    ImageCache.add(Paths.file(characters[charI], "images", "png"));
+                }
+                else{
+                    trace("Character: File at " + characters[charI] + " not found, skipping cache.");
+                }
                 charI++;
+                currentLoaded++;
             }
         }
 
@@ -209,8 +248,14 @@ class Startup extends FlxState
                 graphicsCached = true;
             }
             else{
-                ImageCache.add(Paths.file(graphics[gfxI], "images", "png"));
+                if(CoolUtil.exists(Paths.file(graphics[gfxI], "images", "png"))){
+                    ImageCache.add(Paths.file(graphics[gfxI], "images", "png"));
+                }
+                else{
+                    trace("Character: File at " + graphics[gfxI] + " not found, skipping cache.");
+                }
                 gfxI++;
+                currentLoaded++;
             }
         }
         
@@ -221,6 +266,10 @@ class Startup extends FlxState
     function preload(){
 
         loadingText.text = "Caching Assets...";
+        
+        if(loadingBar != null){
+            loadingBar.visible = true;
+        }
         
         if(!songsCached){ 
             #if sys sys.thread.Thread.create(() -> { #end
@@ -256,12 +305,13 @@ class Startup extends FlxState
 
     function preloadMusic(){
         for(x in songs){
-            if(Assets.exists(Paths.inst(x))){
+            if(CoolUtil.exists(Paths.inst(x))){
                 FlxG.sound.cache(Paths.inst(x));
             }
             else{
                 FlxG.sound.cache(Paths.music(x));
             }
+            currentLoaded++;
         }
         loadingText.text = "Songs cached...";
         songsCached = true;

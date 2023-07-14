@@ -47,7 +47,7 @@ class KeyBindMenuController extends MusicBeatState
         
 		persistentUpdate = persistentDraw = true;
 
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuDesat'));
+		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menu/menuDesat'));
 		bg.scrollFactor.x = 0;
 		bg.scrollFactor.y = 0;
 		bg.setGraphicSize(Std.int(bg.width * 1.18));
@@ -171,7 +171,7 @@ class KeyBindMenuController extends MusicBeatState
     function textUpdate(){
 
         keyTextDisplay.clearFormats();
-        keyTextDisplay.text = "\n\n";
+        keyTextDisplay.text = "";
 
         for(i in 0...4){
 

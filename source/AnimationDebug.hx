@@ -33,7 +33,7 @@ class AnimationDebug extends FlxState
 	private var camHUD:FlxCamera;
 	private var camGame:FlxCamera;
 
-	var flippedChars:Array<String> = ["pico"];
+	//var flippedChars:Array<String> = ["pico", "tankman"];
 
 	public function new(daAnim:String = 'spooky')
 	{
@@ -57,25 +57,24 @@ class AnimationDebug extends FlxState
 
 		FlxG.sound.music.stop();
 
-		var gridBG:FlxSprite = FlxGridOverlay.create(10, 10);
+		var gridBG:FlxSprite = FlxGridOverlay.create(10, 10, 1280*4, 720*4);
 		gridBG.scrollFactor.set(0.5, 0.5);
+		gridBG.screenCenter(XY);
 		add(gridBG);
 
-		dad = new Character(0, 0, daAnim);
+		dad = new Character(0, 0, daAnim, false, true);
 		dad.screenCenter();
-		dad.debugMode = true;
 
-		dadBG = new Character(0, 0, daAnim);
+		dadBG = new Character(0, 0, daAnim, false, true);
 		dadBG.screenCenter();
-		dadBG.debugMode = true;
 		dadBG.alpha = 0.75;
 		dadBG.color = 0xFF000000;
 
 		add(dadBG);
 		add(dad);
 
-		dad.flipX = flippedChars.contains(dad.curCharacter);
-		dadBG.flipX = flippedChars.contains(dadBG.curCharacter);
+		//dad.flipX = flippedChars.contains(dad.curCharacter);
+		//dadBG.flipX = flippedChars.contains(dadBG.curCharacter);
 
 		dumbTexts = new FlxTypedGroup<FlxText>();
 		add(dumbTexts);

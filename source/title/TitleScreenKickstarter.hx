@@ -14,7 +14,7 @@ import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.system.ui.FlxSoundTray;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
@@ -81,11 +81,11 @@ class TitleScreenKickstarter extends MusicBeatState
 		add(titleText);
 
 		if(FlxG.sound.music == null){
-			FlxG.sound.playMusic(Paths.music(titleMusic), 0.75);
+			FlxG.sound.playMusic(Paths.music(titleMusic), 1);
 		}
 		else{
 			if(!FlxG.sound.music.playing){
-				FlxG.sound.playMusic(Paths.music(titleMusic), 0.75);
+				FlxG.sound.playMusic(Paths.music(titleMusic), 1);
 				switch(titleMusic){
 					case "klaskiiLoop":
 						Conductor.changeBPM(158);
